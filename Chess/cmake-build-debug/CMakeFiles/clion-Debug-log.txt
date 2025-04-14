@@ -1,0 +1,4 @@
+/Users/ronadi/Applications/CLion.app/Contents/bin/cmake/mac/aarch64/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/Users/ronadi/Applications/CLion.app/Contents/bin/ninja/mac/aarch64/ninja -G Ninja -S "/Users/ronadi/Software/Linux + CPP - excellenteam/EX2-Chess/chess-ex1-RonAdi77/Chess" -B "/Users/ronadi/Software/Linux + CPP - excellenteam/EX2-Chess/chess-ex1-RonAdi77/Chess/cmake-build-debug"
+-- Configuring done (0.0s)
+-- Generating done (0.0s)
+-- Build files have been written to: /Users/ronadi/Software/Linux + CPP - excellenteam/EX2-Chess/chess-ex1-RonAdi77/Chess/cmake-build-debug

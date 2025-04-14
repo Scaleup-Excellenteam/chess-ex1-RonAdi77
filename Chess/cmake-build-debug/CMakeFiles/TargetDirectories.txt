@@ -1,0 +1,7 @@
+/Users/ronadi/Software/Linux + CPP - excellenteam/EX2-Chess/chess-ex1-RonAdi77/Chess/cmake-build-debug/CMakeFiles/Chess.dir
+/Users/ronadi/Software/Linux + CPP - excellenteam/EX2-Chess/chess-ex1-RonAdi77/Chess/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/ronadi/Software/Linux + CPP - excellenteam/EX2-Chess/chess-ex1-RonAdi77/Chess/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/Users/ronadi/Software/Linux + CPP - excellenteam/EX2-Chess/chess-ex1-RonAdi77/Chess/cmake-build-debug/include/CMakeFiles/edit_cache.dir
+/Users/ronadi/Software/Linux + CPP - excellenteam/EX2-Chess/chess-ex1-RonAdi77/Chess/cmake-build-debug/include/CMakeFiles/rebuild_cache.dir
+/Users/ronadi/Software/Linux + CPP - excellenteam/EX2-Chess/chess-ex1-RonAdi77/Chess/cmake-build-debug/src/CMakeFiles/edit_cache.dir
+/Users/ronadi/Software/Linux + CPP - excellenteam/EX2-Chess/chess-ex1-RonAdi77/Chess/cmake-build-debug/src/CMakeFiles/rebuild_cache.dir
