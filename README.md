@@ -39,3 +39,11 @@ This project uses a classic **Minimax algorithm** enhanced with **Alpha-Beta pru
 - **b** = average branching factor (number of legal moves per turn)  
 - **d** = search depth (how many layers deep the algorithm looks)  
 - **Time complexity**: `O(b^d)`
+
+## 🪄 Pawn Promotion Logic
+
+- The project includes complete logic for **pawn promotion**.
+- When a pawn reaches the final rank, the player is prompted to choose a promotion (e.g., Queen, Rook, Bishop, Knight).
+- The promotion is fully functional from a logic standpoint: the new piece behaves as expected during gameplay.
+- **Note**: Due to limitations in the provided `Chess` class (which could not be modified), the **board will still visually show a pawn** even after promotion.  
+  However, internally and functionally, the promoted piece behaves according to the chosen type.
