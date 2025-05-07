@@ -14,7 +14,7 @@ const int EMPTY_SOURCE = 11;
 const int OPPONENT_SOURCE = 12;
 
 /**
- * @brief Constant representing a destination occupied by the player's own piece.
+ * @brief Constant representing a _destination occupied by the player's own piece.
  */
 const int OWN_PIECE_DESTINATION = 13;
 
@@ -93,19 +93,10 @@ enum COLOR {
  */
 typedef std::pair<char, int> Box;
 
+bool operator==(const Box&,const Box&);
+
 
 // ---- Functions ----
-/**
- * @brief Compares two Box objects for equality.
- * This operator checks if both Box objects represent the same position
- * or state in the context of the chessboard. The exact comparison logic 
- * depends on the Box class implementation, typically comparing internal 
- * coordinates or piece data.
- * @param lhs The first Box object to compare.
- * @param rhs The second Box object to compare.
- * @return true if the boxes are equal, false otherwise.
- */
-bool operator==(const Box&,const Box&);
 
 /**
  * @brief Checks whether a box is a valid board position.
@@ -121,4 +112,31 @@ bool inBoard(const Box& box);
  */
 COLOR colorNot(COLOR color);
 
-
+/**
+ * @struct Move
+ * @brief Represents a move in a chess game.
+ * Contains the source and destination coordinates of the move, along with a score that
+ * evaluates the quality of the move, used for algorithms like minimax.
+ */
+struct Move{
+    Box _source;        ///< The source position of the piece being moved
+    Box _destination;   ///< The destination position of the piece being moved
+    int _score;         ///< The score associated with the move, used for evaluating move quality
+    /**
+    * @brief Compares the scores of two moves.
+    * Subtracts the score of the current move from that of another move. Used for sorting moves.
+    * @param other The other Move object to compare to.
+    * @return The difference in scores between the two moves.
+    */
+    int operator-(const Move& other) const{
+        return _score - other._score;
+    }
+    /**
+     * @brief Outputs a Move to an output stream.
+     * Prints the source and destination of the move along with its score.
+     * @param os The output stream to write to.
+     * @param move The Move object to print.
+     * @return The updated output stream.
+     */
+    friend std::ostream& operator<<(std::ostream& os,const Move& move );
+};

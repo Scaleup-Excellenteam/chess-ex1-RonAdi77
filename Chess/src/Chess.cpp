@@ -178,7 +178,8 @@ void Chess::show() const
 // clear screen and print the board and the relevant msg 
 void Chess::displayBoard() const
 {
-	clear();
+    // It prevents me from printing the recommended moves (in the Linux terminal), so I put it in a comment.
+//	clear();
 	show();
 	cout << m_msg<< m_errorMsg;
 	
@@ -191,7 +192,7 @@ void Chess::showAskInput() const
 	else
 		cout << "Player 2 (Black - Small letters)   >> ";
 }
-// check if the source and dest are the same 
+// check if the _source and dest are the same
 bool Chess::isSame() const 
 {
 	return ((m_input[0] == m_input[2]) && (m_input[1] == m_input[3]));
@@ -232,17 +233,17 @@ void Chess::doTurn()
 	{
 	case 11:
 	{
-		m_msg = "there is not piece at the source \n";
+		m_msg = "there is not piece at the _source \n";
 		break;
 	}
 	case 12:
 	{
-		m_msg = "the piece in the source is piece of your opponent \n";
+		m_msg = "the piece in the _source is piece of your opponent \n";
 		break;
 	}
 	case 13:
 	{
-		m_msg = "there one of your pieces at the destination \n";
+		m_msg = "there one of your pieces at the _destination \n";
 		break;
 	}
 	case 21:
@@ -280,7 +281,7 @@ Chess::Chess(const string& start)
 	setPieces();
 }
 
-// get the source and destination 
+// get the _source and _destination
 string Chess::getInput()
 {
 	static bool isFirst = true;
@@ -301,7 +302,7 @@ string Chess::getInput()
 		if (!isValid())
 			m_errorMsg = "Invalid input !! \n";
 		else
-			m_errorMsg = "The source and the destination are the same !! \n";
+			m_errorMsg = "The _source and the _destination are the same !! \n";
 		displayBoard();
 		showAskInput();
 		cin >> m_input;

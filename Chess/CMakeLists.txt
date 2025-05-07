@@ -39,6 +39,10 @@ add_executable (Chess ""
         src/Move.cpp
         src/Common.cpp
         include/Piece.h
+        include/PriorityQueue.h
+        include/PriorityAlgo.h
+        src/PriorityAlgo.cpp
+        include/MyExceptions.h
 )
 
 

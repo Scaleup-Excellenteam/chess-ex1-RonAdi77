@@ -20,16 +20,16 @@ Knight::Knight(const Box & init, COLOR color) : Piece(init,KNIGHT,color){}
 std::vector<Box> Knight::getRawMoves(const Board & board) {
     std::vector<Box> result;
     try{
-        std::vector<Box> front =  frontKnight(board, std::make_shared<Knight>(*this));
-        result.insert(result.end(),front.begin(),front.end());
-        std::vector<Box> back = backKnight(board,std::make_shared<Knight>(*this));
-        result.insert(result.end(),back.begin(),back.end());
-        std::vector<Box> right = rightKnight(board,std::make_shared<Knight>(*this));
-        result.insert(result.end(),right.begin(),right.end());
-        std::vector<Box> left = leftKnight(board,std::make_shared<Knight>(*this));
-        result.insert(result.end(),left.begin(),left.end());
+        auto moves =  frontKnight(board, std::make_shared<Knight>(*this));
+        result.insert(result.end(),moves.begin(),moves.end());
+        moves = backKnight(board,std::make_shared<Knight>(*this));
+        result.insert(result.end(),moves.begin(),moves.end());
+        moves = rightKnight(board,std::make_shared<Knight>(*this));
+        result.insert(result.end(),moves.begin(),moves.end());
+        moves = leftKnight(board,std::make_shared<Knight>(*this));
+        result.insert(result.end(),moves.begin(),moves.end());
     }
-    catch (std::runtime_error& e) {
+    catch (EmptyPiece& e) {
         throw e;
     }
 

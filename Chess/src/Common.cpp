@@ -1,14 +1,6 @@
 #include "Common.h"
 
-/**
- * @brief Compares two Box objects for equality based on their coordinates.
- * This operator returns true if both Box objects have the same `first` (row)
- * and `second` (column) values, meaning they represent the same position
- * on the chessboard.
- * @param lhs The first Box object to compare.
- * @param rhs The second Box object to compare.
- * @return true if both boxes have identical coordinates, false otherwise.
- */
+
 bool operator==(const Box& lhs,const Box& rhs){
     return (lhs.first == rhs.first && lhs.second == rhs.second);
 }
@@ -32,4 +24,17 @@ bool inBoard(const Box& box){
  */
 COLOR colorNot(COLOR color){
     return (color == BLACK)? WHITE:BLACK;
+}
+/**
+ * @brief Outputs a Move object to an output stream.
+ * This function formats the move by printing the source and destination coordinates
+ * of the move. The source and destination are represented as the combination of
+ * row and column (e.g., "A2" to "A4").
+ * @param os The output stream to write the move to (e.g., std::cout).
+ * @param move The Move object to be printed.
+ * @return The updated output stream after printing the move.
+ */
+std::ostream& operator<<(std::ostream &os, const Move &move) {
+    os << move._source.first << move._source.second << " " << move._destination.first << move._destination.second;
+    return os;
 }

@@ -13,7 +13,7 @@ std::vector<Box> frontFreeBoxes(const Board& board,const std::shared_ptr<Piece>&
     try{
         direction = (piece->getColor() == BLACK)? -1 : 1; // black or white piece.
     }
-    catch (std::runtime_error& e){
+    catch (EmptyPiece& e){
         throw e;
     }
     int moveLength = direction;
@@ -23,7 +23,7 @@ std::vector<Box> frontFreeBoxes(const Board& board,const std::shared_ptr<Piece>&
     while(!searchEnd){
         Box checkFree = {row+moveLength,col};
         if (!inBoard(checkFree)) break;
-        if (!board.isOcuupied(checkFree)){
+        if (!board.isOccupied(checkFree)){
             result.push_back(checkFree);
         } else{
             //if this box is filled with opposite piece then add the option to eat it , else make this box protected.
@@ -34,7 +34,7 @@ std::vector<Box> frontFreeBoxes(const Board& board,const std::shared_ptr<Piece>&
                 try{
                     board.getPiece(checkFree)->setIsProtected(true);
                 }
-                catch (std::runtime_error& e){
+                catch (EmptyPiece& e){
                     throw e;
                 }
 
@@ -61,7 +61,7 @@ std::vector<Box> backFreeBoxes(const Board& board,const std::shared_ptr<Piece>& 
     try {
         direction = (piece->getColor() == BLACK)? 1 : -1; // black or white piece.
     }
-    catch (std::runtime_error& e){
+    catch (EmptyPiece& e){
         throw e;
     }
     int moveLength = direction;
@@ -71,7 +71,7 @@ std::vector<Box> backFreeBoxes(const Board& board,const std::shared_ptr<Piece>& 
     while(!searchEnd){
         Box checkFree = {row+moveLength,col};
         if (!inBoard(checkFree)) break;
-        if (!board.isOcuupied(checkFree)){
+        if (!board.isOccupied(checkFree)){
             result.push_back(checkFree);
         } else{
             //if this box is filled with opposite piece then add the option to eat it , else make this box protected.
@@ -82,7 +82,7 @@ std::vector<Box> backFreeBoxes(const Board& board,const std::shared_ptr<Piece>& 
                 try{
                     board.getPiece(checkFree)->setIsProtected(true);
                 }
-                catch (std::runtime_error& e){
+                catch (EmptyPiece& e){
                     throw e;
                 }
             }
@@ -110,7 +110,7 @@ std::vector<Box> rightFreeBoxes(const Board& board,const std::shared_ptr<Piece>&
     while(!searchEnd){
         Box checkFree = {row,col+direction};
         if (!inBoard(checkFree)) break;
-        if (!board.isOcuupied(checkFree)){
+        if (!board.isOccupied(checkFree)){
             result.push_back(checkFree);
         } else{
             //if this box is filled with opposite piece then add the option to eat it , else make this box protected.
@@ -121,7 +121,7 @@ std::vector<Box> rightFreeBoxes(const Board& board,const std::shared_ptr<Piece>&
                 try{
                     board.getPiece(checkFree)->setIsProtected(true);
                 }
-                catch (std::runtime_error& e){
+                catch (EmptyPiece& e){
                     throw e;
                 }
             }
@@ -149,7 +149,7 @@ std::vector<Box> leftFreeBoxes(const Board& board,const std::shared_ptr<Piece>& 
     while(!searchEnd){
         Box checkFree = {row,col+direction};
         if (!inBoard(checkFree)) break;
-        if (!board.isOcuupied(checkFree)){
+        if (!board.isOccupied(checkFree)){
             result.push_back(checkFree);
         } else{
             //if this box is filled with opposite piece then add the option to eat it , else make this box protected.
@@ -160,7 +160,7 @@ std::vector<Box> leftFreeBoxes(const Board& board,const std::shared_ptr<Piece>& 
                 try{
                     board.getPiece(checkFree)->setIsProtected(true);
                 }
-                catch (std::runtime_error& e){
+                catch (EmptyPiece& e){
                     throw e;
                 }
             }
@@ -169,7 +169,7 @@ std::vector<Box> leftFreeBoxes(const Board& board,const std::shared_ptr<Piece>& 
         if (piece->getType() == KING){
             searchEnd = true;
         }
-        direction++;
+        direction--;
     }
     return result;
 }
@@ -185,7 +185,7 @@ std::vector<Box> diagFrontRight(const Board& board,const std::shared_ptr<Piece>&
     try {
          rowDirection = -(piece->getColor() == BLACK)? -1 : 1; // black or white piece.;
     }
-    catch (std::runtime_error& e){
+    catch (EmptyPiece& e){
         throw e;
     }
     int colDirection = -1*rowDirection;
@@ -197,7 +197,7 @@ std::vector<Box> diagFrontRight(const Board& board,const std::shared_ptr<Piece>&
     while(!searchEnd){
         Box checkFree = {row+rowLength,col+colLength};
         if (!inBoard(checkFree)) break;
-        if (!board.isOcuupied(checkFree)){
+        if (!board.isOccupied(checkFree)){
             result.push_back(checkFree);
         } else{
             //if this box is filled with opposite piece then add the option to eat it , else make this box protected.
@@ -208,7 +208,7 @@ std::vector<Box> diagFrontRight(const Board& board,const std::shared_ptr<Piece>&
                 try{
                     board.getPiece(checkFree)->setIsProtected(true);
                 }
-                catch (std::runtime_error& e){
+                catch (EmptyPiece& e){
                     throw e;
                 }
             }
@@ -234,7 +234,7 @@ std::vector<Box> diagBackRight(const Board& board,const std::shared_ptr<Piece>& 
     try {
          direction = -(piece->getColor() == BLACK)? 1 : -1; // black or white piece.;
     }
-    catch (std::runtime_error& e){
+    catch (EmptyPiece& e){
         throw e;
     }
     int moveLength = direction;
@@ -244,7 +244,7 @@ std::vector<Box> diagBackRight(const Board& board,const std::shared_ptr<Piece>& 
     while(!searchEnd){
         Box checkFree = {row+moveLength,col+moveLength};
         if (!inBoard(checkFree)) break;
-        if (!board.isOcuupied(checkFree)){
+        if (!board.isOccupied(checkFree)){
             result.push_back(checkFree);
         } else{
             //if this box is filled with opposite piece then add the option to eat it , else make this box protected.
@@ -255,7 +255,7 @@ std::vector<Box> diagBackRight(const Board& board,const std::shared_ptr<Piece>& 
                 try{
                     board.getPiece(checkFree)->setIsProtected(true);
                 }
-                catch (std::runtime_error& e){
+                catch (EmptyPiece& e){
                     throw e;
                 }
             }
@@ -280,7 +280,7 @@ std::vector<Box> diagFrontLeft(const Board& board,const std::shared_ptr<Piece>& 
     try {
          direction = -(piece->getColor() == BLACK)? -1 : 1; // black or white piece.;
     }
-    catch (std::runtime_error& e){
+    catch (EmptyPiece& e){
         throw e;
     }
     int moveLength = direction;
@@ -290,7 +290,7 @@ std::vector<Box> diagFrontLeft(const Board& board,const std::shared_ptr<Piece>& 
     while(!searchEnd){
         Box checkFree = {row+moveLength,col+moveLength};
         if (!inBoard(checkFree)) break;
-        if (!board.isOcuupied(checkFree)){
+        if (!board.isOccupied(checkFree)){
             result.push_back(checkFree);
         } else{
             //if this box is filled with opposite piece then add the option to eat it , else make this box protected.
@@ -301,7 +301,7 @@ std::vector<Box> diagFrontLeft(const Board& board,const std::shared_ptr<Piece>& 
                 try{
                     board.getPiece(checkFree)->setIsProtected(true);
                 }
-                catch (std::runtime_error& e){
+                catch (EmptyPiece& e){
                     throw e;
                 }
             }
@@ -326,7 +326,7 @@ std::vector<Box> diagBackLeft(const Board& board,const std::shared_ptr<Piece>& p
     try{
          rowDirection = -(piece->getColor() == BLACK)? 1 : -1; // black or white piece.;
     }
-    catch (std::runtime_error& e){
+    catch (EmptyPiece& e){
         throw e;
     }
     int colDirection = -1*rowDirection;
@@ -338,7 +338,7 @@ std::vector<Box> diagBackLeft(const Board& board,const std::shared_ptr<Piece>& p
     while(!searchEnd){
         Box checkFree = {row+rowLength,col+colLength};
         if (!inBoard(checkFree)) break;
-        if (!board.isOcuupied(checkFree)){
+        if (!board.isOccupied(checkFree)){
             result.push_back(checkFree);
         } else{
             //if this box is filled with opposite piece then add the option to eat it , else make this box protected.
@@ -349,7 +349,7 @@ std::vector<Box> diagBackLeft(const Board& board,const std::shared_ptr<Piece>& p
                 try{
                     board.getPiece(checkFree)->setIsProtected(true);
                 }
-                catch (std::runtime_error& e){
+                catch (EmptyPiece& e){
                     throw e;
                 }
             }
@@ -378,33 +378,13 @@ std::vector<Box> frontKnight(const Board& board,const  std::shared_ptr<Knight>& 
     try {
          direction = (knight->getColor() == BLACK)? -2 : 2;
     }
-    catch (std::runtime_error& e){
+    catch (EmptyPiece&e){
         throw e;
     }
     Box checkRight = {row + direction,col + 1};
     Box  checkLeft = {row + direction,col - 1};
-    std::vector<Box> help = {checkLeft,checkRight};
-    for (Box box : help){
-        if (inBoard(box)){
-            if (!board.isOcuupied(box)){
-                result.push_back(box);
-            }
-            else{
-                if (!board.isSameColor(box,knight->getColor())){
-                    result.push_back(box);
-                }
-                else{
-                    try{
-                        board.getPiece(box)->setIsProtected(true);
-                    }
-                    catch (std::runtime_error& e){
-                        throw e;
-                    }
-                }
-            }
-        }
-    }
-    return result;
+    std::vector<Box> targets = {checkLeft,checkRight};
+    return checkKnightTargets(board,knight,targets);
 }
 
 /**
@@ -422,33 +402,13 @@ std::vector<Box> backKnight(const Board& board,const std::shared_ptr<Knight>& kn
     try {
          direction = (knight->getColor() == BLACK)? 2 : -2;
     }
-    catch (std::runtime_error& e){
+    catch (EmptyPiece& e){
         throw e;
     }
     Box checkRight = {row + direction,col + 1};
     Box  checkLeft = {row + direction,col - 1};
-    std::vector<Box> help = {checkLeft,checkRight};
-    for (Box box : help){
-        if (inBoard(box)){
-            if (!board.isOcuupied(box)){
-                result.push_back(box);
-            }
-            else{
-                if (!board.isSameColor(box,knight->getColor())){
-                    result.push_back(box);
-                }
-                else{
-                    try{
-                        board.getPiece(box)->setIsProtected(true);
-                    }
-                    catch (std::runtime_error& e){
-                        throw e;
-                    }
-                }
-            }
-        }
-    }
-    return result;
+    std::vector<Box> targets = {checkLeft,checkRight};
+    return checkKnightTargets(board,knight,targets);
 }
 /**
  * Calculates the rightward move options (free or capturable) for a knight.
@@ -465,33 +425,13 @@ std::vector<Box> rightKnight(const Board& board, const std::shared_ptr<Knight>& 
     try {
          direction = (knight->getColor() == BLACK)? 2 : -2;
     }
-    catch (std::runtime_error& e){
+    catch (EmptyPiece& e){
         throw e;
     }
     Box checkRight = {row + 1,col + direction};
     Box  checkLeft = {row - 1,col + direction};
-    std::vector<Box> help = {checkLeft,checkRight};
-    for (Box box : help){
-        if (inBoard(box)){
-            if (!board.isOcuupied(box)){
-                result.push_back(box);
-            }
-            else{
-                if (!board.isSameColor(box,knight->getColor())){
-                    result.push_back(box);
-                }
-                else{
-                    try{
-                        board.getPiece(box)->setIsProtected(true);
-                    }
-                    catch (std::runtime_error& e){
-                        throw e;
-                    }
-                }
-            }
-        }
-    }
-    return result;
+    std::vector<Box> targets = {checkLeft,checkRight};
+    return checkKnightTargets(board,knight,targets);
 }
 /**
  * Calculates the leftward move options (free or capturable) for a knight.
@@ -508,27 +448,29 @@ std::vector<Box> leftKnight(const Board& board, const std::shared_ptr<Knight>& k
     try {
          direction = (knight->getColor() == BLACK)? -2 : 2;
     }
-    catch (std::runtime_error& e){
+    catch (EmptyPiece& e){
         throw e;
     }
 
     Box checkRight = {row + 1,col + direction};
     Box  checkLeft = {row - 1,col + direction};
-    std::vector<Box> help = {checkLeft,checkRight};
-    for (Box box : help){
-        if (inBoard(box)){
-            if (!board.isOcuupied(box)){
+    std::vector<Box> targets = {checkLeft,checkRight};
+    return checkKnightTargets(board,knight,targets);
+}
+
+std::vector<Box> checkKnightTargets(const Board& board, const std::shared_ptr<Knight>& knight, const std::vector<Box>& targets){
+    std::vector<Box> result;
+    for (const Box& box : targets) {
+        if (inBoard(box)) {
+            if (!board.isOccupied(box)) {
                 result.push_back(box);
-            }
-            else{
-                if (!board.isSameColor(box,knight->getColor())){
+            } else {
+                if (!board.isSameColor(box, knight->getColor())) {
                     result.push_back(box);
-                }
-                else{
-                    try{
+                } else {
+                    try {
                         board.getPiece(box)->setIsProtected(true);
-                    }
-                    catch (std::runtime_error& e){
+                    } catch (EmptyPiece& e) {
                         throw e;
                     }
                 }
@@ -537,10 +479,11 @@ std::vector<Box> leftKnight(const Board& board, const std::shared_ptr<Knight>& k
     }
     return result;
 }
+
 /**
- * Parses a string input representing a move (e.g. "E2E4") and converts it into source and destination Box objects.
- * @param input A string of 4 characters where the first two represent the source and the last two the destination.
- * @return A pair of Box objects representing the source and destination positions on the board.
+ * Parses a string input representing a move (e.g. "E2E4") and converts it into _source and _destination Box objects.
+ * @param input A string of 4 characters where the first two represent the _source and the last two the _destination.
+ * @return A pair of Box objects representing the _source and _destination positions on the board.
  */
 std::pair<Box,Box> stringToBox(const std::string& input){
     Box source = {std::toupper(input[0]),input[1] - '0'};

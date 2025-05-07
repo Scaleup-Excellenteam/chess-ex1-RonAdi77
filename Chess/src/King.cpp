@@ -24,42 +24,42 @@ std::vector<Box> King::getRawMoves(const Board & board) {
 
     try{
         // rook moves
-        std::vector<Box> front =  frontFreeBoxes(board, std::make_shared<King>(*this));
-        if (!front.empty()){
-            result.push_back(front.at(0));
+        auto moves =  frontFreeBoxes(board, std::make_shared<King>(*this));
+        if (!moves.empty()){
+            result.push_back(moves.at(0));
         }
-        std::vector<Box> back = backFreeBoxes(board,std::make_shared<King>(*this));
-        if (!back.empty()){
-            result.push_back(back.at(0));
+        moves = backFreeBoxes(board,std::make_shared<King>(*this));
+        if (!moves.empty()){
+            result.push_back(moves.at(0));
         }
-        std::vector<Box> right = rightFreeBoxes(board,std::make_shared<King>(*this));
-        if (!right.empty()){
-            result.push_back(right.at(0));
+        moves = rightFreeBoxes(board,std::make_shared<King>(*this));
+        if (!moves.empty()){
+            result.push_back(moves.at(0));
         }
-        std::vector<Box> left = leftFreeBoxes(board,std::make_shared<King>(*this));
-        if (!left.empty()){
-            result.insert(result.end(),left.begin(),left.end());
+        moves = leftFreeBoxes(board,std::make_shared<King>(*this));
+        if (!moves.empty()){
+            result.insert(result.end(),moves.begin(),moves.end());
         }
 
         // bishop moves
-        std::vector<Box> frontRight =  diagFrontRight(board, std::make_shared<King>(*this));
-        if (!frontRight.empty()){
-            result.push_back(frontRight.at(0));
+        moves =  diagFrontRight(board, std::make_shared<King>(*this));
+        if (!moves.empty()){
+            result.push_back(moves.at(0));
         }
-        std::vector<Box> frontLeft = diagFrontLeft(board,std::make_shared<King>(*this));
-        if (!frontLeft.empty()){
-            result.push_back(frontLeft.at(0));
+        moves = diagFrontLeft(board,std::make_shared<King>(*this));
+        if (!moves.empty()){
+            result.push_back(moves.at(0));
         }
-        std::vector<Box> backRight = diagBackRight(board,std::make_shared<King>(*this));
-        if(!backRight.empty()){
-            result.push_back(backRight.at(0));
+        moves = diagBackRight(board,std::make_shared<King>(*this));
+        if(!moves.empty()){
+            result.push_back(moves.at(0));
         }
-        std::vector<Box> backLeft = diagBackLeft(board,std::make_shared<King>(*this));
-        if(!backLeft.empty()){
-            result.push_back(backLeft.at(0));
+        moves = diagBackLeft(board,std::make_shared<King>(*this));
+        if(!moves.empty()){
+            result.push_back(moves.at(0));
         }
     }
-    catch (std::runtime_error& e){
+    catch (EmptyPiece& e){
         throw e;
     }
 

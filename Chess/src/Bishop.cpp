@@ -21,17 +21,17 @@ std::vector<Box> Bishop::getRawMoves(const Board & board) {
     std::vector<Box> result;
 
     try {
-        std::vector<Box> FrontRight = diagFrontRight(board, std::make_shared<Bishop>(*this));
-        result.insert(result.end(),FrontRight.begin(),FrontRight.end());
-        std::vector<Box> FrontLeft = diagFrontLeft(board,std::make_shared<Bishop>(*this));
-        result.insert(result.end(),FrontLeft.begin(),FrontLeft.end());
-        std::vector<Box> BackRight = diagBackRight(board,std::make_shared<Bishop>(*this));
-        result.insert(result.end(),BackRight.begin(),BackRight.end());
-        std::vector<Box> BackLeft = diagBackLeft(board,std::make_shared<Bishop>(*this));
-        result.insert(result.end(),BackLeft.begin(),BackLeft.end());
+        auto moves = diagFrontRight(board, std::make_shared<Bishop>(*this));
+        result.insert(result.end(),moves.begin(),moves.end());
+        moves = diagFrontLeft(board,std::make_shared<Bishop>(*this));
+        result.insert(result.end(),moves.begin(),moves.end());
+        moves = diagBackRight(board,std::make_shared<Bishop>(*this));
+        result.insert(result.end(),moves.begin(),moves.end());
+        moves = diagBackLeft(board,std::make_shared<Bishop>(*this));
+        result.insert(result.end(),moves.begin(),moves.end());
     }
 
-    catch (std::runtime_error& e) {
+    catch (EmptyPiece& e) {
         throw e;
     }
 

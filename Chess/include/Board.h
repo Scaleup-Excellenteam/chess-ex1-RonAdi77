@@ -49,7 +49,7 @@ public:
     /**
     * @brief Gets all valid (post-check-filtered) potential moves for a color.
     * @param color Color of pieces to gather moves for.
-    * @return Set of legal destination boxes for all pieces of that color.
+    * @return Set of legal _destination boxes for all pieces of that color.
     */
     [[nodiscard]] std::set<Box> getPiecesPotenMoves(COLOR) const;
     /**
@@ -57,7 +57,7 @@ public:
      *
      * Includes moves that may result in self-check.
      * @param color Color of the pieces.
-     * @return Set of all raw destination boxes.
+     * @return Set of all raw _destination boxes.
      */
     [[nodiscard]] std::set<Box> getPiecesRawMoves(COLOR) const;
     /**
@@ -72,7 +72,7 @@ public:
     * @param location The box to check.
     * @return True if a piece exists at that location.
     */
-    [[nodiscard]] bool isOcuupied(const Box&) const;
+    [[nodiscard]] bool isOccupied(const Box &box) const;
     /**
     * @brief Checks whether a given color is in check.
     * @param color The color to test for check.
@@ -81,21 +81,58 @@ public:
     [[nodiscard]] bool isCheck(COLOR)const;
 
     /**
-    * @brief Moves a piece to a destination, handling capturing.
+    * @brief Moves a piece to a _destination, handling capturing.
     * Updates the board and the piece's internal state.
-    * @param destination The destination to move to.
+    * @param destination The _destination to move to.
     * @param piece The piece to move (shared pointer).
     */
     void pieceMove(const Box&,const std::shared_ptr<Piece>&);
+    /**
+     * @brief Moves a piece to the specified destination and handles pawn promotion if applicable.
+     * If the piece is a pawn and can be promoted, the user will be prompted to select a promotion type.
+     * If the input is invalid, an error message is displayed.
+     * @param destination The target position (Box) for the piece.
+     * @param piece The piece to be moved.
+     */
+    void makeMove(const Box&,const std::shared_ptr<Piece>&);
     /**
     * @brief Updates potential moves for all pieces of a given color.
     * Should be called before checking for check or making a move.
     * @param color The color to update moves for.
     */
     void updatePotenMoves(COLOR);
+    /**
+     * @brief Retrieves all legal moves available for the given color.
+     *
+     * Iterates over all pieces of the specified color and collects their potential moves.
+     * Each move is stored as a Move object with source and destination coordinates and an initial score of 0.
+     *
+     * @param color The color of the player (WHITE or BLACK) whose legal moves are to be retrieved.
+     * @return A vector of Move objects representing all legal moves for the given color.
+     */
+    [[nodiscard]] std::vector<Move> getALLLegalMoves(COLOR) const;
+    /**
+     * @brief Returns the piece located at the specified board position.
+     *
+     * Primarily used for internal algorithmic purposes. If no piece exists at the provided box,
+     * a static null shared pointer is returned.
+     *
+     * @param box The board coordinate to look up.
+     * @return A const reference to a shared pointer of the Piece at the specified location, or nullptr if none exists.
+     */
+    [[nodiscard]] const std::shared_ptr<Piece>& algoGetPiece(const Box&) const;
+    /**
+     * @brief Checks if the specified player is in a checkmate state.
+     *
+     * Determines whether the player of the given color has any legal moves left.
+     * If not and the king is under threat, it's a checkmate.
+     *
+     * @param color The color of the player to check for mate.
+     * @return true if the player is in checkmate; false otherwise.
+     */
+    [[nodiscard]] bool isMate(COLOR) const;
 
     // This functions for further implementation
-    //    [[nodiscard]] bool isMate(COLOR)const;
     //    bool isDraw()const;
     //    bool isThreeFoldDraw()const;
     //    bool isStalemate()const;

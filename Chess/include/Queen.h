@@ -22,7 +22,7 @@ public:
      * @brief Returns all raw possible moves of the queen based on the current board state.
      * Combines the movement abilities of both the rook and bishop.
      * @param board The current state of the board.
-     * @return A vector of potential destination boxes.
+     * @return A vector of potential _destination boxes.
      */
 
     std::vector<Box> getRawMoves(const Board&) override;

@@ -72,6 +72,8 @@ std::vector<Box> rightKnight(const Board&, const std::shared_ptr<Knight>&);
  */
 std::vector<Box> leftKnight(const Board&, const std::shared_ptr<Knight>&);
 
+std::vector<Box> checkKnightTargets(const Board&, const std::shared_ptr<Knight>&, const std::vector<Box>& );
+
 /**
  * @brief Converts a move string (e.g., "E2E4") into a pair of Box positions.
  */

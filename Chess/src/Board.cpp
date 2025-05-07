@@ -62,13 +62,14 @@ void Board::stringToBoard(const std::string& strBoard) {
  * @brief Returns the piece at a given box.
  * @param box The location to access.
  * @return A shared pointer to the piece.
- * @throws std::runtime_error if the box is empty.
+ * @throws EmptyPiece if the box is empty.
  */
 const std::shared_ptr<Piece>& Board::getPiece(const Box& box) const {
     try {
         return _board.at(box);
-    } catch (const std::out_of_range &) {
-        throw std::runtime_error("No piece in that box");
+    } catch (const std::out_of_range & e) {
+        throw EmptyPiece("No piece in that box");
+
     }
 }
 /**
@@ -81,7 +82,7 @@ bool Board::isSameColor(const Box& box, COLOR color) const {
     try{
         return getPiece(box)->getColor() == color;
     }
-    catch (std::runtime_error& e){
+    catch (EmptyPiece& e){
         throw e;
     }
 }
@@ -90,7 +91,7 @@ bool Board::isSameColor(const Box& box, COLOR color) const {
  * @param box The box to check.
  * @return True if a piece exists at the box.
  */
-bool Board::isOcuupied(const Box& box) const {
+bool Board::isOccupied(const Box& box) const {
     return _board.find(box) != _board.end();
 }
 /**
@@ -105,7 +106,7 @@ void Board::addPiece(const std::shared_ptr<Piece>& piece) {
  * @param box The location to remove from.
  */
 void Board::removePiece(const Box & box) {
-    if (isOcuupied(box)){
+    if (isOccupied(box)){
         _board.erase(box);
     }
 }
@@ -125,7 +126,7 @@ Box Board::getKingLocation(COLOR color) const {
 /**
  * @brief Returns all potential moves (after legality filtering) for a color.
  * @param color Color of pieces to scan.
- * @return Set of all valid destination boxes.
+ * @return Set of all valid _destination boxes.
  */
 std::set<Box> Board::getPiecesPotenMoves(COLOR color)const {
     std::set<Box> result;
@@ -141,7 +142,7 @@ std::set<Box> Board::getPiecesPotenMoves(COLOR color)const {
 /**
  * @brief Returns all raw (unfiltered) moves for all pieces of a color.
  * @param color Color of pieces.
- * @return Set of destination boxes.
+ * @return Set of _destination boxes.
  */
 std::set<Box> Board::getPiecesRawMoves(COLOR color) const{
     std::set<Box> result;
@@ -161,9 +162,17 @@ std::set<Box> Board::getPiecesRawMoves(COLOR color) const{
 bool Board::isCheck(COLOR color) const {
     return getPiecesPotenMoves(colorNot(color)).contains(getKingLocation(color));
 }
+/**
+ * @brief Checks whether a color is in mate.
+ * @param color The color to check.
+ * @return True if the player is in mate.
+ */
+bool Board::isMate(COLOR color) const {
+    return isCheck(color) && getPiecesPotenMoves(color).empty();
+}
 
 /**
- * @brief Moves a piece to a destination, updates internal state.
+ * @brief Moves a piece to a _destination, updates internal state.
  *
  * Does not check for move legality.
  * @param destination The box to move to.
@@ -177,6 +186,35 @@ void Board::pieceMove(const Box& destination, const std::shared_ptr<Piece>& piec
     addPiece(piece);
     removePiece(currentLocation);
 }
+
+/**
+ * @brief Makes a move for a given piece to the specified destination.
+ * This function moves the specified piece to the given destination. If the piece is a pawn
+ * and is eligible for promotion, it will prompt the user for the promotion choice. The pawn
+ * is then promoted to the selected piece (Queen, Rook, Bishop, or Knight). The new piece is
+ * added to the board after promotion.
+ * If the promotion input is invalid, an exception is caught and an error message is printed.
+ * @param destination The destination Box (coordinate) for the move.
+ * @param piece The piece to be moved.
+ */
+void Board::makeMove(const Box& destination,const std::shared_ptr<Piece>& piece) {
+    auto pieceToMove = piece;
+    if (piece->getType() == PAWN){
+        auto pawn = std::dynamic_pointer_cast<Pawn>(piece);
+        if (pawn->canPromote() && pawn){
+            try{
+                pawn->userPromotionChoice(pawn->getLocation());
+                pieceToMove = pawn->getPromotedPiece();
+                addPiece(pieceToMove);
+            }
+            catch (WrongPromotionInput& e){
+                std::cerr << e.what();
+            }
+        }
+    }
+    pieceMove(destination,pieceToMove);
+}
+
 /**
  * @brief Updates potential moves for all pieces on the board.
  * Protects kings by marking enemy threats first, then computing moves.
@@ -197,6 +235,42 @@ void Board::updatePotenMoves(COLOR color) {
         }
     }
 }
+/**
+ * @brief Retrieves all legal moves for the given color.
+ * Iterates through all pieces on the board of the specified color and collects
+ * their potential moves into a vector of Move objects. Each move includes
+ * a source, destination, and default score (set to 0).
+ * @param color The color of the pieces to generate legal moves for (WHITE or BLACK).
+ * @return A vector containing all legal moves for the given color.
+ */
+std::vector<Move> Board::getALLLegalMoves(COLOR color)const{
+    std::vector<Move> result;
+    for (const auto& [box,piece] : _board){
+        if (piece->getColor() != color){
+            continue;
+        }
+        for (auto destination : piece->getPotentialMoves()){
+            Move move = {box,destination,0};
+            result.push_back(move);
+        }
+    }
+    return result;
+}
+/**
+ * @brief Retrieves a piece from a specific board coordinate.
+ * Used primarily in algorithms to safely access a piece. If no piece exists
+ * @param box The location on the board to check.
+ * @return A const reference to a shared pointer of the piece, or null if none exists.
+ */
+const std::shared_ptr<Piece> &Board::algoGetPiece(const Box & box) const {
+    static const std::shared_ptr<Piece> nullPiece = nullptr;
+    auto it = _board.find(box);
+    if (it == _board.end()) return nullPiece;
+    return it->second;
+}
+
+
+
 
 
 

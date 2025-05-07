@@ -1,4 +1,3 @@
-#pragma one
 #include "Piece.h"
 
 #include <utility>
@@ -38,7 +37,7 @@ void Piece::moved() {
     _hasMoved = true;
 }
 
-bool Piece::isIsProtected() const {
+bool Piece::isProtected() const {
     return _isProtected;
 }
 
@@ -70,12 +69,7 @@ void Piece::addMoves(std::vector<Box> moves) {
  */
 bool Piece::isValidMove(const Box& box,const Board& board) {
     std::vector<Box> rawMoves = getRawMoves(board);
-    for (auto move : rawMoves){
-        if (move == box){
-            return true;
-        }
-    }
-    return false;
+    return std::find(rawMoves.begin(), rawMoves.end(), box) != rawMoves.end();
 }
 /**
  * @brief Updates the potential moves based on the current board state.
@@ -98,12 +92,12 @@ std::vector<Box> Piece::removeOwnCheck(const Board & board) {
         Box currentMove = *it;
         Board currentBoard(board);
         try{
-            if(currentBoard.isOcuupied(currentMove) && getType() == KING && board.getPiece(currentMove)->isIsProtected()){
+            if(currentBoard.isOccupied(currentMove) && getType() == KING && board.getPiece(currentMove)->isProtected()){
                 it = result.erase(it);
                 continue;
             }
         }
-        catch (std::runtime_error& e){
+        catch (EmptyPiece& e){
             throw e;
         }
 

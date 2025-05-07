@@ -3,6 +3,7 @@
 #include <set>
 #include <vector>
 #include <memory>
+#include "MyExceptions.h"
 
 
 class Board;
@@ -30,13 +31,13 @@ public:
     [[nodiscard]] COLOR getColor() const;
     [[nodiscard]] bool isHasMoved() const;
     void moved();
-    [[nodiscard]] bool isIsProtected() const;
+    [[nodiscard]] bool isProtected() const;
     void setIsProtected(bool);
     [[nodiscard]] const std::set<Box> &getPotentialMoves() const;
 
     /**
      * @brief Checks whether a given move is in the potential moves list.
-     * @param destination The destination box.
+     * @param destination The _destination box.
      * @return True if move is valid, false otherwise.
      */
     bool isValidMove(const Box&,const Board&);
@@ -65,7 +66,7 @@ public:
 
     /**
     * @brief Checks whether the move results in self-check.
-    * @param destination The intended destination.
+    * @param destination The intended _destination.
     * @param board The board to simulate the move on.
     * @return True if the move leaves the king in check.
     */

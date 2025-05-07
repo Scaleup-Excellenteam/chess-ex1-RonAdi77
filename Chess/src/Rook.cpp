@@ -18,19 +18,17 @@ Rook::Rook(const Box & init, COLOR color): Piece(init,ROOK,color) {}
  */
 std::vector<Box> Rook::getRawMoves(const Board & board) {
     std::vector<Box> result;
-
     try{
-        std::vector<Box> front =  frontFreeBoxes(board, std::make_shared<Rook>(*this));
-        result.insert(result.end(),front.begin(),front.end());
-        std::vector<Box> back = backFreeBoxes(board,std::make_shared<Rook>(*this));
-        result.insert(result.end(),back.begin(),back.end());
-        std::vector<Box> right = rightFreeBoxes(board,std::make_shared<Rook>(*this));
-        result.insert(result.end(),right.begin(),right.end());
-        std::vector<Box> left = leftFreeBoxes(board,std::make_shared<Rook>(*this));
-        result.insert(result.end(),left.begin(),left.end());
+        auto moves =  frontFreeBoxes(board, std::make_shared<Rook>(*this));
+        result.insert(result.end(),moves.begin(),moves.end());
+        moves = backFreeBoxes(board,std::make_shared<Rook>(*this));
+        result.insert(result.end(),moves.begin(),moves.end());
+        moves = rightFreeBoxes(board,std::make_shared<Rook>(*this));
+        result.insert(result.end(),moves.begin(),moves.end());
+        moves = leftFreeBoxes(board,std::make_shared<Rook>(*this));
+        result.insert(result.end(),moves.begin(),moves.end());
     }
-
-    catch (std::runtime_error& e) {
+    catch (EmptyPiece& e) {
         throw e;
     }
 

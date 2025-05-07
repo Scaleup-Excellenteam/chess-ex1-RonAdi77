@@ -19,27 +19,27 @@ std::vector<Box> Queen::getRawMoves(const Board & board) {
 
     try{
         // Rook-style moves
-        std::vector<Box> front =  frontFreeBoxes(board, std::make_shared<Queen>(*this));
-        result.insert(result.end(),front.begin(),front.end());
-        std::vector<Box> back = backFreeBoxes(board,std::make_shared<Queen>(*this));
-        result.insert(result.end(),back.begin(),back.end());
-        std::vector<Box> right = rightFreeBoxes(board,std::make_shared<Queen>(*this));
-        result.insert(result.end(),right.begin(),right.end());
-        std::vector<Box> left = leftFreeBoxes(board,std::make_shared<Queen>(*this));
-        result.insert(result.end(),left.begin(),left.end());
+        auto moves =  frontFreeBoxes(board, std::make_shared<Queen>(*this));
+        result.insert(result.end(),moves.begin(),moves.end());
+        moves = backFreeBoxes(board,std::make_shared<Queen>(*this));
+        result.insert(result.end(),moves.begin(),moves.end());
+        moves = rightFreeBoxes(board,std::make_shared<Queen>(*this));
+        result.insert(result.end(),moves.begin(),moves.end());
+        moves = leftFreeBoxes(board,std::make_shared<Queen>(*this));
+        result.insert(result.end(),moves.begin(),moves.end());
 
         // Bishop-style moves
-        std::vector<Box> frontRight =  diagFrontRight(board, std::make_shared<Queen>(*this));
-        result.insert(result.end(),frontRight.begin(),frontRight.end());
-        std::vector<Box> frontLeft = diagFrontLeft(board,std::make_shared<Queen>(*this));
-        result.insert(result.end(),frontLeft.begin(),frontLeft.end());
-        std::vector<Box> backRight = diagBackRight(board,std::make_shared<Queen>(*this));
-        result.insert(result.end(),backRight.begin(),backRight.end());
-        std::vector<Box> backLeft = diagBackLeft(board,std::make_shared<Queen>(*this));
-        result.insert(result.end(),backLeft.begin(),backLeft.end());
+        moves =  diagFrontRight(board, std::make_shared<Queen>(*this));
+        result.insert(result.end(),moves.begin(),moves.end());
+        moves = diagFrontLeft(board,std::make_shared<Queen>(*this));
+        result.insert(result.end(),moves.begin(),moves.end());
+        moves = diagBackRight(board,std::make_shared<Queen>(*this));
+        result.insert(result.end(),moves.begin(),moves.end());
+        moves = diagBackLeft(board,std::make_shared<Queen>(*this));
+        result.insert(result.end(),moves.begin(),moves.end());
     }
 
-    catch (std::runtime_error& e) {
+    catch (EmptyPiece& e) {
         throw e;
     }
 
