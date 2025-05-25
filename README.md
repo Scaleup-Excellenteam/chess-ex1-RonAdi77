@@ -19,31 +19,40 @@ To enhance the performance of the Minimax algorithm, we implemented **parallel m
 
 ---
 
-### 📊 Performance Comparison
+## 📊 Performance Comparison
 
 To evaluate the effectiveness of our parallel implementation, we ran an 8-move auto-play game at **depth 2**, comparing runtime across different thread counts:
 
 | Threads | Runtime (seconds) |
 |---------|-------------------|
-| 0       | 67s               |
-| 2       | 46s               |
-| 4       | 31s               |
-| 8       | 22s               |
+| 0       | 32s               |
+| 2       | 22s               |
+| 4       | 15s               |
+| 8       | 12s               |
+
+---
+
+### 📸 Example Output
+
+Below is an example run showing the system output for each thread count (0, 2, 4, 8):
+
+![F349DCD9-D3C7-4284-859D-6ADE3EAF7D8A](https://github.com/user-attachments/assets/ec328e34-b3f8-4524-acf4-95578a6ad4c1)
 
 ---
 
 ### 💡 Analysis
 
-- **Single-threaded mode (0 threads)** is the slowest, as all move evaluations are computed sequentially.
-- With **2 threads**, we see a noticeable speedup due to basic parallelization.
-- **4 threads** achieves nearly 2× improvement over 2 threads, highlighting efficient workload distribution.
-- **8 threads** offers the fastest result, but with diminishing returns due to:
-  - Overhead from thread management.
-  - Some threads becoming idle when fewer pieces remain to evaluate.
-  - **Early stopping** (via `stopFlag`) reducing total computation but not always evenly across threads.
+- **Single-threaded mode (0 threads)** is the slowest, as all move evaluations are performed sequentially.
+- **2 threads** already achieves a noticeable performance boost through parallelism.
+- **4 threads** provides a significant speedup over 2 threads, efficiently distributing the workload across typical piece counts.
+- **8 threads** gives the best time, though gains taper off due to:
+  - **Thread management overhead**
+  - **Idle threads** when fewer pieces are left to evaluate
+  - The **early-stopping** mechanism (`stopFlag`) halting computations once a winning move is detected—this does not always distribute work evenly.
 
 ---
 
 ### 🧠 Conclusion
 
-Our parallel Minimax engine scales well up to **4–8 threads** for depth 2. For deeper searches, the performance gap will likely grow even more significantly in favor of **multithreading**.
+Our parallel Minimax engine shows strong scalability up to 8 threads for shallow searches (depth 2). For deeper searches or more complex positions, we expect even greater relative gains from multithreading.
+
