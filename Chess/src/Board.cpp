@@ -269,6 +269,16 @@ const std::shared_ptr<Piece> &Board::algoGetPiece(const Box & box) const {
     return it->second;
 }
 
+std::vector<std::shared_ptr<Piece>> Board::getPieces(COLOR color) {
+     std::vector<std::shared_ptr<Piece>> result;
+     for (auto& [box, piece] : _board){
+         if ( piece->getColor() == color){
+             result.push_back(piece);
+         }
+     }
+    return result;
+}
+
 
 
 

@@ -3,6 +3,7 @@
 #include <set>
 #include <vector>
 #include <memory>
+#include <algorithm>
 #include "MyExceptions.h"
 
 
@@ -84,6 +85,8 @@ public:
      * @return Vector of candidate move destinations.
      */
     virtual std::vector<Box> getRawMoves(const Board&) = 0;
+
+    std::vector<Move> getPotenMoves();
 
 private:
     Box _location;                 ///< Current location of the piece

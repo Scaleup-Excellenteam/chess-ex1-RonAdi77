@@ -1,5 +1,6 @@
 #pragma once
 #include "PriorityQueue.h"
+#include "ThreadManger.h"
 #include "Common.h"
 #include "Board.h"
 
@@ -77,6 +78,8 @@ bool isControlMiddle(const Box&);
  * @return The number of positions in the center.
  */
 int calculateControlMiddle(const std::set<Box>&);
+
+
 
 
 

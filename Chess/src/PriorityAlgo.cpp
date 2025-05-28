@@ -1,4 +1,5 @@
 #include "PriorityAlgo.h"
+
 #include <climits>
 
 /**
@@ -89,11 +90,12 @@ PriorityQueue<Move> miniMaxMain(int depth, COLOR color, Board& board) {
         auto source = board.algoGetPiece(move._source)->pieceSharedPtr();
         move._score = miniMax(depth, move, board, color, color, INT_MIN, INT_MAX);
         undoMove(move,board,source,dest);
+
         priorityQueue.push(move);
+
     }
 
     return priorityQueue;
-
 }
 /**
  * @brief Recursively scores a move using the minimax algorithm with alpha-beta pruning.
@@ -216,3 +218,4 @@ int calculateControlMiddle(const std::set<Box>& set) {
     }
     return result;
 }
+

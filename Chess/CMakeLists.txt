@@ -43,6 +43,10 @@ add_executable (Chess ""
         include/PriorityAlgo.h
         src/PriorityAlgo.cpp
         include/MyExceptions.h
+        include/ThreadManger.h
+        src/ThreadManger.cpp
+        include/Game.h
+        src/Game.cpp
 )
 
 

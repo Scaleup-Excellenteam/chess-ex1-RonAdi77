@@ -130,6 +130,15 @@ bool Piece::ownCheck(const Box& destination,const Board& board) const  {
 
 }
 
+std::vector<Move> Piece::getPotenMoves() {
+    std::vector<Move> result;
+    for (auto destination : getPotentialMoves()){
+        Move move = {getLocation(),destination,0};
+        result.push_back(move);
+    }
+    return result;
+}
+
 
 
 

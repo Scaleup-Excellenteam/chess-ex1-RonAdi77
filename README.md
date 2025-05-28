@@ -1,49 +1,58 @@
-# ♟️ Chess Part2 – Exception Handling & Minimax Algorithm
+## 🚀 Chess Part 3 – Multithreading, Synchronization & Performance Benchmarking
 
-## 📌 Custom Exceptions
+### 🧵 Thread Pool Based Parallelism
 
-This project defines two custom exception classes used for robust error handling in specific chess scenarios:
+To enhance the performance of the Minimax algorithm, we implemented **parallel move evaluation** using a custom `ThreadPool` class.
 
-### 1. `WrongPromotionInput`
-- **Thrown when**: A player inputs an invalid choice during pawn promotion.
-- **Use case**:  
-  When a pawn reaches the last rank, the player is prompted to choose a promotion (1–4).  
-  If the input is invalid (e.g., not 1–4), this exception is triggered with a descriptive error message.
+#### ✅ Work Division
 
-### 2. `EmptyPiece`
-- **Thrown when**: An operation is attempted on a square without a piece.
-- **Use case**:  
-  Helps catch logical errors where code mistakenly tries to interact with an empty square as if it holds a piece.
+- Each thread is responsible for evaluating the potential moves of **one chess piece**.
+- For thread safety, the `Board` is cloned per thread (`Board tempBoard = board`).
+- If there are **more pieces than threads**, the evaluation is split into batches.
+
+### 🔐 Synchronization
+
+- Access to the **global `PriorityQueue<Move>`** is synchronized using a `std::mutex`.
+- An **early-stopping mechanism** is employed:
+  - If a thread finds a move with a score exceeding a certain threshold (e.g., `100`), it sets an atomic flag: `std::atomic<bool> stopFlag = true`.
+  - All other threads periodically check this flag and terminate early if it is set.
 
 ---
 
-## 🧠 Minimax Algorithm with Alpha-Beta Pruning
+## 📊 Performance Comparison
 
-This project uses a classic **Minimax algorithm** enhanced with **Alpha-Beta pruning** to evaluate and rank potential moves intelligently.
+To evaluate the effectiveness of our parallel implementation, we ran an 8-move auto-play game at **depth 2**, comparing runtime across different thread counts:
 
-### 🔄 How It Works
+| Threads | Runtime (seconds) |
+|---------|-------------------|
+| 0       | 32s               |
+| 2       | 22s               |
+| 4       | 15s               |
+| 8       | 12s               |
 
-- The function `miniMaxMain()` scans all legal moves for the current player.
-- Each move is simulated and evaluated recursively by the `miniMax()` function, which:
-  - Analyzes board control (e.g., center control, threat zones).
-  - Adjusts score based on:
-    - Piece captures
-    - Threats
-    - Positional danger/safety
-  - Recursively explores future moves up to a given depth.
-- **Alpha-Beta pruning** is used to eliminate unnecessary branches and improve performance.
-- The **top 5 moves** are stored in a priority queue, sorted by their evaluation scores.
+---
 
-### ⏱️ Time Complexity
+### 📸 Example Output
 
-- **b** = average branching factor (number of legal moves per turn)  
-- **d** = search depth (how many layers deep the algorithm looks)  
-- **Time complexity**: `O(b^d)`
+Below is an example run showing the system output for each thread count (0, 2, 4, 8):
 
-## 🪄 Pawn Promotion Logic
+![F349DCD9-D3C7-4284-859D-6ADE3EAF7D8A](https://github.com/user-attachments/assets/ec328e34-b3f8-4524-acf4-95578a6ad4c1)
 
-- The project includes complete logic for **pawn promotion**.
-- When a pawn reaches the final rank, the player is prompted to choose a promotion (e.g., Queen, Rook, Bishop, Knight).
-- The promotion is fully functional from a logic standpoint: the new piece behaves as expected during gameplay.
-- **Note**: Due to limitations in the provided `Chess` class (which could not be modified), the **board will still visually show a pawn** even after promotion.  
-  However, internally and functionally, the promoted piece behaves according to the chosen type.
+---
+
+### 💡 Analysis
+
+- **Single-threaded mode (0 threads)** is the slowest, as all move evaluations are performed sequentially.
+- **2 threads** already achieves a noticeable performance boost through parallelism.
+- **4 threads** provides a significant speedup over 2 threads, efficiently distributing the workload across typical piece counts.
+- **8 threads** gives the best time, though gains taper off due to:
+  - **Thread management overhead**
+  - **Idle threads** when fewer pieces are left to evaluate
+  - The **early-stopping** mechanism (`stopFlag`) halting computations once a winning move is detected—this does not always distribute work evenly.
+
+---
+
+### 🧠 Conclusion
+
+Our parallel Minimax engine shows strong scalability up to 8 threads for shallow searches (depth 2). For deeper searches or more complex positions, we expect even greater relative gains from multithreading.
+

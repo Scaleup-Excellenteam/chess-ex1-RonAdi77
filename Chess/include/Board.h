@@ -132,10 +132,10 @@ public:
      */
     [[nodiscard]] bool isMate(COLOR) const;
 
-    // This functions for further implementation
-    //    bool isDraw()const;
-    //    bool isThreeFoldDraw()const;
-    //    bool isStalemate()const;
+
+
+    std::vector<std::shared_ptr<Piece>> getPieces(COLOR);
+
 
 
 
