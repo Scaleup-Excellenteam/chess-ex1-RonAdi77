@@ -1,6 +1,7 @@
 #pragma once
 #include "Piece.h"
 #include <map>
+#include <unordered_map>
 #include <memory>
 
 /**
