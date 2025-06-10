@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include "Board.h"
 #ifdef _WIN32
 #include <Windows.h>
 #endif
@@ -38,6 +39,6 @@ public:
 	Chess(const string& start = "RNBQKBNRPPPPPPPP################################pppppppprnbqkbnr");
 	Chess(const Chess&)=delete;
 	Chess& operator=(const Chess&) = delete;
-	string getInput();
+	string getInput(bool user, string& computerMove , const Board& currentBoard);
 	void setCodeResponse(int codeResponse);
 };

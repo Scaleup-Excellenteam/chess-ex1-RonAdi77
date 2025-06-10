@@ -178,7 +178,8 @@ void Chess::show() const
 // clear screen and print the board and the relevant msg 
 void Chess::displayBoard() const
 {
-	clear();
+    // It prevents me from printing the recommended moves (in the Linux terminal), so I put it in a comment.
+//	clear();
 	show();
 	cout << m_msg<< m_errorMsg;
 	
@@ -191,7 +192,7 @@ void Chess::showAskInput() const
 	else
 		cout << "Player 2 (Black - Small letters)   >> ";
 }
-// check if the source and dest are the same 
+// check if the _source and dest are the same
 bool Chess::isSame() const 
 {
 	return ((m_input[0] == m_input[2]) && (m_input[1] == m_input[3]));
@@ -213,16 +214,75 @@ bool Chess::isExit() const
 // execute the movement on board 
 void Chess::excute()
 {
-	int row = (m_input[0] - 'a');
-	int col = (m_input[1] - '1');
-	char pieceInSource = m_boardString[(row * 8) + col]; 
-	m_boardString[(row * 8) + col] = '#'; 
+//	int row = (m_input[0] - 'a');
+//	int col = (m_input[1] - '1');
+//	char pieceInSource = m_boardString[(row * 8) + col];
+//	m_boardString[(row * 8) + col] = '#';
+//
+//
+//	row = (m_input[2] - 'a');
+//	col = (m_input[3] - '1');
+//	m_boardString[(row * 8) + col] = pieceInSource;
+//
+//	setPieces();
 
-	row = (m_input[2] - 'a');
-	col = (m_input[3] - '1');
-	m_boardString[(row * 8) + col] = pieceInSource; 
 
-	setPieces(); 
+    int sourceRow = (m_input[0] - 'a');
+    int sourceCol = (m_input[1] - '1');
+    int destRow = (m_input[2] - 'a');
+    int destCol = (m_input[3] - '1');
+
+    char pieceInSource = m_boardString[(sourceRow * 8) + sourceCol];
+    char pieceAtDestination = m_boardString[(destRow * 8) + destCol];
+
+    // White King side castle: e1g1
+    if (pieceInSource == 'K' && sourceRow == 0 && sourceCol == 4 && destRow == 0 && destCol == 6) {
+        m_boardString[(0 * 8) + 4] = '#'; // Clear King's original position (a5)
+        m_boardString[(0 * 8) + 7] = '#'; // Clear Rook's original position (a8)
+        m_boardString[(0 * 8) + 6] = 'K'; // Place King at a7
+        m_boardString[(0 * 8) + 5] = 'R'; // Place Rook at a6
+    }
+        // White Queen side castle: e1c1 (input is e1c1)
+    else if (pieceInSource == 'K' && sourceRow == 0 && sourceCol == 4 && destRow == 0 && destCol == 2) {
+        m_boardString[(0 * 8) + 4] = '#'; // Clear King's original position (a5)
+        m_boardString[(0 * 8) + 0] = '#'; // Clear Rook's original position (a1)
+        m_boardString[(0 * 8) + 2] = 'K'; // Place King at a3
+        m_boardString[(0 * 8) + 3] = 'R'; // Place Rook at a4
+    }
+        // Black King side castle: e8g8 (input is e8g8)
+    else if (pieceInSource == 'k' && sourceRow == 7 && sourceCol == 4 && destRow == 7 && destCol == 6) {
+        m_boardString[(7 * 8) + 4] = '#'; // Clear King's original position (h5)
+        m_boardString[(7 * 8) + 7] = '#'; // Clear Rook's original position (h8)
+        m_boardString[(7 * 8) + 6] = 'k'; // Place King at h7
+        m_boardString[(7 * 8) + 5] = 'r'; // Place Rook at h6
+    }
+        // Black Queen side castle: e8c8 (input is e8c8)
+    else if (pieceInSource == 'k' && sourceRow == 7 && sourceCol == 4 && destRow == 7 && destCol == 2) {
+        m_boardString[(7 * 8) + 4] = '#'; // Clear King's original position (h5)
+        m_boardString[(7 * 8) + 0] = '#'; // Clear Rook's original position (h1)
+        m_boardString[(7 * 8) + 2] = 'k'; // Place King at h3
+        m_boardString[(7 * 8) + 3] = 'r'; // Place Rook at h4
+    }
+        // Special handling for Pawn Promotion: A pawn reaching the end of the board
+        // In this case, the `Board` class has already handled the promotion choice,
+        // so `m_boardString` needs to be updated with the *new* promoted piece
+        // that is now at the destination.
+    else if (((pieceInSource == 'P' && destRow == 7) || (pieceInSource == 'p' && destRow == 0)) &&
+             (pieceAtDestination != '#' && pieceAtDestination != 'P' && pieceAtDestination != 'p')) {
+        // This condition checks if a pawn has reached the end of the board
+        // AND if the piece at the destination is *not* empty and *not* the original pawn.
+        // This implies that Board::makeMove has already placed the promoted piece.
+        m_boardString[(sourceRow * 8) + sourceCol] = '#'; // Clear the original pawn position
+        // The pieceAtDestination already holds the promoted piece character
+        // m_boardString[(destRow * 8) + destCol] = pieceAtDestination; // No need, it's already there
+    }
+        // Normal move: clear source, place piece at destination
+    else {
+        m_boardString[(sourceRow * 8) + sourceCol] = '#'; // Clear source
+        m_boardString[(destRow * 8) + destCol] = pieceInSource; // Place piece at destination
+    }
+
+    setPieces(); // Update the graphical board with the new m_boardString
 }
 // check the response code and switch turn if needed 
 void Chess::doTurn()
@@ -232,17 +292,17 @@ void Chess::doTurn()
 	{
 	case 11:
 	{
-		m_msg = "there is not piece at the source \n";
+		m_msg = "there is not piece at the _source \n";
 		break;
 	}
 	case 12:
 	{
-		m_msg = "the piece in the source is piece of your opponent \n";
+		m_msg = "the piece in the _source is piece of your opponent \n";
 		break;
 	}
 	case 13:
 	{
-		m_msg = "there one of your pieces at the destination \n";
+		m_msg = "there one of your pieces at the _destination \n";
 		break;
 	}
 	case 21:
@@ -257,14 +317,14 @@ void Chess::doTurn()
 	}
 	case 41:
 	{
-		excute();
+//		excute();
 		m_turn = !m_turn;
 		m_msg = "the last movement was legal and cause check \n";
 		break;
 	}
 	case 42:
 	{
-		excute();
+//		excute();
 		m_turn = !m_turn;
 		m_msg = "the last movement was legal \n";
 		break;
@@ -280,20 +340,40 @@ Chess::Chess(const string& start)
 	setPieces();
 }
 
-// get the source and destination 
-string Chess::getInput()
+/**
+ * @brief Gets a move input string either from the user or computer.
+ *        Validates the input format and ensures source and destination differ.
+ *
+ * @param user True if the input is from the user, false if from computerMove string.
+ * @param computerMove The computer's move string (used if user == false).
+ * @param currentBoard Current board state (used for display and validation).
+ * @return Validated move string in format like "e2e4", or "exit" if quitting.
+ */
+string Chess::getInput(bool user, string& computerMove, const Board& currentBoard)
 {
 	static bool isFirst = true;
 
-	if (isFirst)
-		isFirst = false;
-	else
-		doTurn(); 
+	if (isFirst){
+        isFirst = false;
+        m_boardString = currentBoard.boardToString();
+    }
+	else{
+        doTurn();
+        m_boardString = currentBoard.boardToString();
+        setPieces();
+    }
+
 
 	displayBoard();
-	showAskInput();
+    if (user){
+        showAskInput();
+        cin >> m_input;
+    }
+    else{
+        m_input = computerMove;
+    }
 
-	cin >> m_input;
+
 	if (isExit())
 		return "exit";
 	while (!isValid() || isSame())
@@ -301,10 +381,16 @@ string Chess::getInput()
 		if (!isValid())
 			m_errorMsg = "Invalid input !! \n";
 		else
-			m_errorMsg = "The source and the destination are the same !! \n";
+			m_errorMsg = "The _source and the _destination are the same !! \n";
 		displayBoard();
-		showAskInput();
-		cin >> m_input;
+        if(user){
+            showAskInput();
+            cin >> m_input;
+        }
+        else{
+            m_input = computerMove;
+        }
+
 		if (isExit())
 			return "exit";
 	}
@@ -316,6 +402,7 @@ string Chess::getInput()
 		if (('A' <= m_input[2]) && (m_input[2] <= 'H'))
 			m_input[2] = (m_input[2] - 'A' + 'a');
 	}
+
 
 	return m_input;
 }
