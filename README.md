@@ -20,8 +20,8 @@ choose mode: (0 = manual, 1 = computer): 1
 Enter search depth: 3
 ```
 
-- **0** – Manual mode (human vs. human)
-- **1** – Computer mode (you play as White, the computer plays as Black)
+- **0** – Manual mode (user vs. user)
+- **1** – Computer mode (user vs computer)
 
 ## 📁 Project Structure
 
