@@ -1,6 +1,7 @@
 #pragma once
 #include <list>
 #include <iostream>
+#include <optional>
 #include <mutex>
 
 template <typename T>
